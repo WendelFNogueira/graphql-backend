@@ -37,10 +37,16 @@ module.exports = {
     async updatePerfil(_, { filtro, dados }, ctx) {
 
         ctx && ctx.validarAdmin();    
+        let isAdmin = false;
+        let isMaster = false;
     
         try{
             const perfil = await obterPerfil(_, { filtro });
+            isAdmin = perfil.nome.includes('admin');
+            isMaster = perfil.nome.includes('master');
+
             if(perfil) {
+                if(isAdmin || isMaster) ctx && ctx.validarMaster();
                 const { id } = perfil;
                 await db('perfis').where({ id }).update(dados);
             }

@@ -88,6 +88,7 @@ const mutations = {
 
         try{
             const usuario = await obterUsuario(_, { filtro });
+            let isMaster = false;
             if(usuario) {
                 const { id } = usuario;
                 if(ctx.admin && dados.perfis) {
@@ -95,6 +96,9 @@ const mutations = {
 
                     for(let filtro of dados.perfis) {
                         const perfil = await obterPerfil(_, { filtro });
+                        isAdmin = perfil.nome.includes('admin');
+                        isMaster = perfil.nome.includes('master');
+                        if(isAdmin || isMaster) ctx && ctx.validarMaster();
                         perfil && await db('usuarios_perfis').insert({ perfil_id: perfil.id, usuario_id: id });
                     }
                 }
