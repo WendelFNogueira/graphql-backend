@@ -9,7 +9,7 @@ exports.up = async function(knex) {
         table.timestamp('updated_at').defaultTo(knex.fn.now());
     }).then( _ => {
         return knex('perfis').insert([
-            { nome: 'comum', rotulo: 'Usuário' },
+            { nome: 'user', rotulo: 'Usuário' },
             { nome: 'admin', rotulo: 'Administrador' },
             { nome: 'master', rotulo: 'Master' },
         ]);
